@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using StreamServer.Model;
+﻿﻿using StreamServer.Model;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
@@ -12,31 +11,25 @@ namespace StreamServer
 
         private void Start()
         {
+            modelManager.Users[userId] = new User(userId);
         }
 
         private void Update()
         {
-            try
+            var packet = modelManager.Users[userId].Data.CurrentMinimumAvatarPacket;
+            if (packet != null)
             {
-                var packet = modelManager.Users[userId].Data.CurrentMinimumAvatarPacket;
-                if (packet != null)
-                {
-                    var pos = new Vector3(
-                        packet.Position.X,
-                        packet.Position.Y,
-                        packet.Position.Z);
-                    var rot = new Quaternion(
-                        packet.NeckRotation.X,
-                        packet.NeckRotation.Y,
-                        packet.NeckRotation.Z,
-                        packet.NeckRotation.W);
-                    transform.localPosition = pos;
-                    transform.rotation = rot;
-                }
-            }
-            catch (KeyNotFoundException e)
-            {
-                //Debug.Log("Key not found");
+                var pos = new Vector3(
+                    packet.Position.X,
+                    packet.Position.Y,
+                    packet.Position.Z);
+                var rot = new Quaternion(
+                    packet.NeckRotation.X,
+                    packet.NeckRotation.Y,
+                    packet.NeckRotation.Z,
+                    packet.NeckRotation.W);
+                transform.localPosition = pos;
+                transform.rotation = rot;
             }
         }
     }
