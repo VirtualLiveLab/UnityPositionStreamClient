@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95dbba75d0714e9da94a249b62fe8fde, type: 3}
-  m_Name: DataHolder1
+  m_Script: {fileID: 11500000, guid: a86f4d9887a241ff8dbb813d1f936220, type: 3}
+  m_Name: PlayerSpawner
   m_EditorClassIdentifier: 
-  selfId: user101
+  remotePlayerPrefab: {fileID: 4987298094141824011, guid: 27348e2916b2b754c895c8cbe5a4d0ff,
+    type: 3}
