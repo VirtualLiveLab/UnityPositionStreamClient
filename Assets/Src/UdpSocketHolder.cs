@@ -20,6 +20,11 @@ public class UdpSocketHolder : ScriptableObject
             {
                 //--Automatically bind to an available port by binding to port 0.
                 client.Client.Bind(new IPEndPoint(IPAddress.Parse("0.0.0.0"), 0));
+                
+                var sioUdpConnectionReset = -1744830452;
+                var inValue = new byte[] { 0 };
+                var outValue = new byte[] { 0 };
+                client.Client.IOControl(sioUdpConnectionReset, inValue, outValue);
             }
             catch (SocketException e)
             {

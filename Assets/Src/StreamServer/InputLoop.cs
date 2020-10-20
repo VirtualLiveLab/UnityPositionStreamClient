@@ -21,12 +21,12 @@ namespace StreamServer
         private UdpClient udp;
         private int interval;
         private string name;
-        private ModelManager modelManager;
+        private DataHolder _dataHolder;
 
-        public InputLoop(UdpClient udpClient, ModelManager modelManager, int interval, string name = "Receiver")
+        public InputLoop(UdpClient udpClient, DataHolder dataHolder, int interval, string name = "Receiver")
         {
             udp = udpClient;
-            this.modelManager = modelManager;
+            this._dataHolder = dataHolder;
             this.interval = interval;
             this.name = name;
         }
@@ -47,12 +47,12 @@ namespace StreamServer
                     var delay = Task.Delay(interval, token);
                     try
                     {
+                        var users = _dataHolder.Users;
                         while (udp.Available > 0)
                         {
                             var res = await udp.ReceiveAsync();
                             var buf = res.Buffer;
                             var packets = Utility.BufferToPackets(buf);
-                            var users = modelManager.Users;
                             //Add user
                             if (packets != null)
                             {
@@ -72,19 +72,18 @@ namespace StreamServer
                                     users[packet.PaketId] = user;
                                 }
                             }
-
-                            //Delete user
-                            foreach (var kvp in users)
+                        }
+                        //Delete user
+                        foreach (var kvp in users)
+                        {
+                            var user = kvp.Value;
+                            var packet = user.CurrentPacket;
+                            if (user.IsConnected && packet != null && DateTime.Now - user.DateTimeBox.LastUpdated > new TimeSpan(0, 0, 1))
                             {
-                                var user = kvp.Value;
-                                var packet = user.CurrentPacket;
-                                if (user.IsConnected && packet != null && DateTime.Now - user.DateTimeBox.LastUpdated > new TimeSpan(0, 0, 1))
-                                {
-                                    Utility.PrintDbg($"Disconnected: [{user.UserId}] ");
-                                                     user.CurrentPacket = packet = null;
-                                    user.IsConnected = false;
-                                    modelManager.Users.TryRemove(kvp.Key, out var dummy);
-                                }
+                                Utility.PrintDbg($"Disconnected: [{user.UserId}] ");
+                                user.CurrentPacket = packet = null;
+                                user.IsConnected = false;
+                                _dataHolder.Users.TryRemove(kvp.Key, out var dummy);
                             }
                         }
                     }
@@ -92,6 +91,14 @@ namespace StreamServer
                     {
                         PrintDbg(e);
                         PrintDbg("Is the server running？");
+                        try
+                        {
+                        }
+                        catch
+                        {
+                            // ignored
+                        }
+
                         await Task.Delay(1000, token);
                     }
 
