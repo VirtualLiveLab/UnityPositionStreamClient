@@ -13,14 +13,17 @@ public class ReceiveEntry : MonoBehaviour
 
     [FormerlySerializedAs("streamClientSetting")] [SerializeField] private UdpSocketHolder udpSocketHolder;
     [FormerlySerializedAs("modelManager")] [SerializeField] private DataHolder dataHolder;
+    [SerializeField] private RemotePlayerSpawner playerSpawner;
     
     private Task delay = Task.Delay(100);
     
     async Task OnEnable()
     {
+        var scheduler = TaskScheduler.FromCurrentSynchronizationContext();
+        playerSpawner.TaskScheduler = scheduler;
         dataHolder.Initialize();
         await delay;
-        input = new InputLoop(udpSocketHolder.UdpClient, dataHolder, 5);
+        input = new InputLoop(udpSocketHolder.UdpClient, dataHolder, playerSpawner, 5);
         input.Start();
         _statusCheckLoop = new StatusCheckLoop(dataHolder, 5000);
         _statusCheckLoop.Run();

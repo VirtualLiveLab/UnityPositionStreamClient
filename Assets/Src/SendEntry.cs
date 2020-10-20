@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using StreamServer;
 using StreamServer.Model;
@@ -9,16 +10,23 @@ using Vector4 = StreamServer.Model.Vector4;
 
 public class SendEntry : MonoBehaviour
 {
-    [SerializeField] private string userId;
     [FormerlySerializedAs("streamClientSetting")] [SerializeField] private UdpSocketHolder udpSocketHolder;
+    [SerializeField] private DataHolder _dataHolder;
     private SyncOutputLoop output;
     private Task delay = Task.Delay(100);
     async Task OnEnable()
     {
-        await delay;
-        output = new SyncOutputLoop(udpSocketHolder.UdpClient,udpSocketHolder.RemoteEndPoint , userId);
-        output.Start();
-        output.TransformList.Add(transform);
+        try
+        {
+            await delay;
+            output = new SyncOutputLoop(udpSocketHolder.UdpClient, udpSocketHolder, _dataHolder.selfId);
+            output.Start();
+            output.TransformList.Add(transform);
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
     }
 
     private async void OnDisable()
@@ -34,7 +42,7 @@ public class SendEntry : MonoBehaviour
         var position = transform.localPosition;
         var rotation = transform.rotation;
         var buff = Utility.PacketsToBuffer(new List<MinimumAvatarPacket>{new MinimumAvatarPacket(
-            userId,
+            _dataHolder.selfId,
             new Vector3(position.x, position.y, position.z),
             rotation.eulerAngles.y,
             new Vector4(

@@ -22,11 +22,13 @@ namespace StreamServer
         private int interval;
         private string name;
         private DataHolder _dataHolder;
+        private readonly RemotePlayerSpawner _playerSpawner;
 
-        public InputLoop(UdpClient udpClient, DataHolder dataHolder, int interval, string name = "Receiver")
+        public InputLoop(UdpClient udpClient, DataHolder dataHolder, RemotePlayerSpawner playerSpawner, int interval, string name = "Receiver")
         {
             udp = udpClient;
             this._dataHolder = dataHolder;
+            _playerSpawner = playerSpawner;
             this.interval = interval;
             this.name = name;
         }
@@ -65,6 +67,8 @@ namespace StreamServer
                                     {
                                         Utility.PrintDbg($"Connected: [{user.UserId}] " +
                                                          $"({res.RemoteEndPoint.Address}: {res.RemoteEndPoint.Port})");
+                                        if(packet.PaketId != _dataHolder.selfId)
+                                            _playerSpawner.Spawn(packet);
                                     }
                                     user.CurrentPacket = packet;
                                     user.DateTimeBox = new DateTimeBox(DateTime.Now);
@@ -81,9 +85,11 @@ namespace StreamServer
                             if (user.IsConnected && packet != null && DateTime.Now - user.DateTimeBox.LastUpdated > new TimeSpan(0, 0, 1))
                             {
                                 Utility.PrintDbg($"Disconnected: [{user.UserId}] ");
-                                user.CurrentPacket = packet = null;
+                                //user.CurrentPacket = packet = null;
                                 user.IsConnected = false;
                                 _dataHolder.Users.TryRemove(kvp.Key, out var dummy);
+                                if(packet.PaketId != _dataHolder.selfId)
+                                    _playerSpawner.Remove(user.UserId);
                             }
                         }
                     }

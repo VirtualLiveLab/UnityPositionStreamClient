@@ -2,13 +2,20 @@
 using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
+ using UnityEngine.Serialization;
 
-[CreateAssetMenu]
+ [CreateAssetMenu]
 public class UdpSocketHolder : ScriptableObject
 {
     [SerializeField] public string serverIpAddress;
     [SerializeField] public int serverPort;
-    public IPEndPoint RemoteEndPoint => new IPEndPoint(IPAddress.Parse(serverIpAddress), serverPort);
+    [NonSerialized]public IPEndPoint RemoteEndPoint;
+
+    private void OnEnable()
+    {
+        RemoteEndPoint = new IPEndPoint(IPAddress.Parse(serverIpAddress), serverPort);
+    }
+
     [NonSerialized]
     private UdpClient _udpClient;
     public UdpClient UdpClient

@@ -7,7 +7,7 @@ namespace StreamServer
 {
     public class RemoteTransformRegister : MonoBehaviour
     {
-        [SerializeField] private string userId;
+        public string userId;
         [FormerlySerializedAs("modelManager")] [SerializeField] private DataHolder dataHolder;
 
         private void Update()
