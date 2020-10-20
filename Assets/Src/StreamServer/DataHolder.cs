@@ -6,7 +6,7 @@ using UnityEngine;
 namespace StreamServer
 {
     [CreateAssetMenu]
-    public class ModelManager : ScriptableObject
+    public class DataHolder : ScriptableObject
     {
         [NonSerialized]
         public ConcurrentDictionary<string, User> Users = new ConcurrentDictionary<string, User>();

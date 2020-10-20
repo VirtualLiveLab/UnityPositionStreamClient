@@ -1,17 +1,18 @@
 ﻿﻿using StreamServer.Model;
 using UnityEngine;
-using Vector3 = UnityEngine.Vector3;
+ using UnityEngine.Serialization;
+ using Vector3 = UnityEngine.Vector3;
 
 namespace StreamServer
 {
     public class RemoteTransformRegister : MonoBehaviour
     {
         [SerializeField] private string userId;
-        [SerializeField] private ModelManager modelManager;
+        [FormerlySerializedAs("modelManager")] [SerializeField] private DataHolder dataHolder;
 
         private void Update()
         {
-            modelManager.Users.TryGetValue(userId, out var user);
+            dataHolder.Users.TryGetValue(userId, out var user);
             var packet = user?.CurrentPacket;
             if (packet != null)
             {

@@ -9,11 +9,11 @@ public class GenerateClient : MonoBehaviour
     {
         for (int i = 0; i < 10; ++i)
         {
-            ModelManager modelManager = ScriptableObject.CreateInstance<ModelManager>();
+            DataHolder dataHolder = ScriptableObject.CreateInstance<DataHolder>();
             UdpSocketHolder clientSetting = ScriptableObject.CreateInstance<UdpSocketHolder>();
             clientSetting.serverIpAddress = "127.0.0.1";
             clientSetting.serverPort = 5577;
-            AssetDatabase.CreateAsset(modelManager, $"Assets/Resources/AutoGenerate/Gen_ModelManager{i}.asset");
+            AssetDatabase.CreateAsset(dataHolder, $"Assets/Resources/AutoGenerate/Gen_ModelManager{i}.asset");
             AssetDatabase.CreateAsset(clientSetting, $"Assets/Resources/AutoGenerate/Gen_ClientSetting{i}.asset");
             AssetDatabase.SaveAssets();
         }
@@ -24,11 +24,11 @@ public class GenerateClient : MonoBehaviour
     {
         for (int i = 0; i < 10; ++i)
         {
-            ModelManager modelManager = ScriptableObject.CreateInstance<ModelManager>();
+            DataHolder dataHolder = ScriptableObject.CreateInstance<DataHolder>();
             UdpSocketHolder clientSetting = ScriptableObject.CreateInstance<UdpSocketHolder>();
             clientSetting.serverIpAddress = "127.0.0.1";
             clientSetting.serverPort = 5577;
-            AssetDatabase.CreateAsset(modelManager, $"Assets/Resources/AutoGenerate/Gen_ModelManager{i}.asset");
+            AssetDatabase.CreateAsset(dataHolder, $"Assets/Resources/AutoGenerate/Gen_ModelManager{i}.asset");
             AssetDatabase.CreateAsset(clientSetting, $"Assets/Resources/AutoGenerate/Gen_ClientSetting{i}.asset");
             AssetDatabase.SaveAssets();
         }

@@ -12,17 +12,17 @@ public class ReceiveEntry : MonoBehaviour
     private readonly List<CancellationTokenSource> _cancellationTokenSources = new List<CancellationTokenSource>();
 
     [FormerlySerializedAs("streamClientSetting")] [SerializeField] private UdpSocketHolder udpSocketHolder;
-    [SerializeField] private ModelManager modelManager;
+    [FormerlySerializedAs("modelManager")] [SerializeField] private DataHolder dataHolder;
     
     private Task delay = Task.Delay(100);
     
     async Task OnEnable()
     {
-        modelManager.Initialize();
+        dataHolder.Initialize();
         await delay;
-        input = new InputLoop(udpSocketHolder.UdpClient, modelManager, 5);
+        input = new InputLoop(udpSocketHolder.UdpClient, dataHolder, 5);
         input.Start();
-        _statusCheckLoop = new StatusCheckLoop(modelManager, 1000);
+        _statusCheckLoop = new StatusCheckLoop(dataHolder, 5000);
         _statusCheckLoop.Run();
         _cancellationTokenSources.Add(_statusCheckLoop.Cts);
     }
