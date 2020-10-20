@@ -9,14 +9,10 @@ namespace StreamServer
         [SerializeField] private string userId;
         [SerializeField] private ModelManager modelManager;
 
-        private void Start()
-        {
-            modelManager.Users[userId] = new User(userId);
-        }
-
         private void Update()
         {
-            var packet = modelManager.Users[userId].Data.CurrentMinimumAvatarPacket;
+            modelManager.Users.TryGetValue(userId, out var user);
+            var packet = user?.CurrentPacket;
             if (packet != null)
             {
                 var pos = new Vector3(

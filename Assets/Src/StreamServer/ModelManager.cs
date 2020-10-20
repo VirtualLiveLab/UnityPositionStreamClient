@@ -9,6 +9,11 @@ namespace StreamServer
     public class ModelManager : ScriptableObject
     {
         [NonSerialized]
-        public readonly ConcurrentDictionary<string, User> Users = new ConcurrentDictionary<string, User>();
+        public ConcurrentDictionary<string, User> Users = new ConcurrentDictionary<string, User>();
+
+        public void Initialize()
+        {
+            Users = new ConcurrentDictionary<string, User>();
+        }
     }
 }

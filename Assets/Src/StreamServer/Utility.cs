@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using StreamServer.Model;
+using UnityEngine;
 using Vector3 = StreamServer.Model.Vector3;
 using Vector4 = StreamServer.Model.Vector4;
 
@@ -71,6 +72,10 @@ namespace StreamServer
                 Buffer.BlockCopy(bQw, 0, buff, 48 + sizeof(float)*3 + beginOffset, sizeof(float));
             }
             return buff;
+        }
+        public static void PrintDbg<T>(T str, object sender = null)
+        {
+            Debug.Log($"[{sender}] {str}");
         }
     }
 }

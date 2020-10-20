@@ -3,7 +3,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using UnityEngine;
+ using StreamServer.Model;
+ using UnityEngine;
 
 namespace StreamServer
 {
@@ -51,14 +52,38 @@ namespace StreamServer
                             var res = await udp.ReceiveAsync();
                             var buf = res.Buffer;
                             var packets = Utility.BufferToPackets(buf);
+                            var users = modelManager.Users;
+                            //Add user
                             if (packets != null)
                             {
                                 foreach (var packet in packets)
                                 {
-                                    if (modelManager.Users.TryGetValue(packet.PaketId, out var user))
+                                    var user = users.ContainsKey(packet.PaketId) && users[packet.PaketId].IsConnected
+                                        ? users[packet.PaketId] = new User(users[packet.PaketId])
+                                        : users[packet.PaketId] = new User(packet.PaketId);
+                                    if (!user.IsConnected)
                                     {
-                                        user.Data.CurrentMinimumAvatarPacket = packet;
+                                        Utility.PrintDbg($"Connected: [{user.UserId}] " +
+                                                         $"({res.RemoteEndPoint.Address}: {res.RemoteEndPoint.Port})");
                                     }
+                                    user.CurrentPacket = packet;
+                                    user.DateTimeBox = new DateTimeBox(DateTime.Now);
+                                    user.IsConnected = true;
+                                    users[packet.PaketId] = user;
+                                }
+                            }
+
+                            //Delete user
+                            foreach (var kvp in users)
+                            {
+                                var user = kvp.Value;
+                                var packet = user.CurrentPacket;
+                                if (user.IsConnected && packet != null && DateTime.Now - user.DateTimeBox.LastUpdated > new TimeSpan(0, 0, 1))
+                                {
+                                    Utility.PrintDbg($"Disconnected: [{user.UserId}] ");
+                                                     user.CurrentPacket = packet = null;
+                                    user.IsConnected = false;
+                                    modelManager.Users.TryRemove(kvp.Key, out var dummy);
                                 }
                             }
                         }
@@ -67,6 +92,7 @@ namespace StreamServer
                     {
                         PrintDbg(e);
                         PrintDbg("Is the server running？");
+                        await Task.Delay(1000, token);
                     }
 
                     token.ThrowIfCancellationRequested();

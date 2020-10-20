@@ -59,10 +59,16 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Src\InputMove.cs" />
+     <Compile Include="Assets\Src\LoopLibrary\BaseLoop.cs" />
+     <Compile Include="Assets\Src\LoopLibrary\OperationCompletedException.cs" />
+     <Compile Include="Assets\Src\LoopLibrary\Result.cs" />
+     <Compile Include="Assets\Src\LoopLibrary\Unit.cs" />
      <Compile Include="Assets\Src\ReceiveEntry.cs" />
      <Compile Include="Assets\Src\RemoteTransformRegister.cs" />
      <Compile Include="Assets\Src\SendEntry.cs" />
+     <Compile Include="Assets\Src\StatusCheckLoop.cs" />
      <Compile Include="Assets\Src\StreamServer\InputLoop.cs" />
+     <Compile Include="Assets\Src\StreamServer\Model\DateTimeBox.cs" />
      <Compile Include="Assets\Src\StreamServer\Model\MinimumAvatarPacket.cs" />
      <Compile Include="Assets\Src\StreamServer\Model\PacketContainer.cs" />
      <Compile Include="Assets\Src\StreamServer\Model\User.cs" />
