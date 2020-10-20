@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4987298094141824503}
   - component: {fileID: 4987298094141824502}
   - component: {fileID: 4987298094141824501}
-  - component: {fileID: 4987298094141824498}
   - component: {fileID: 4987298094141824499}
   - component: {fileID: 2078793524580227247}
   - component: {fileID: 5616417628634000071}
@@ -98,18 +97,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4987298094141824498
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4987298094141824011}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 811dec6c3517dcc4a97708102083ec05, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &4987298094141824499
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -138,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96a316a768064f2db767dfc5219eb287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userId: User278
+  userId: User868
   dataHolder: {fileID: 11400000, guid: 079614da64568244abbcfff29e8080b9, type: 2}
 --- !u!114 &5616417628634000071
 MonoBehaviour:
@@ -232,7 +219,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8154049980883632774}
-  m_Text: User278
+  m_Text: User868
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1

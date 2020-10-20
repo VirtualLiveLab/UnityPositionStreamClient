@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using StreamServer.Model;
 using UnityEngine;
+using Vector3 = UnityEngine.Vector3;
 
 namespace StreamServer
 {
@@ -23,7 +24,8 @@ namespace StreamServer
                 {
                     remotePlayerPrefab.GetComponent<RemoteTransformRegister>().userId = packet.PaketId;
                     remotePlayerPrefab.GetComponent<ChangeName>().Change(packet.PaketId);
-                    _remotePlayers.Add(Instantiate(remotePlayerPrefab));
+                    _remotePlayers.Add(Instantiate(remotePlayerPrefab, new Vector3(packet.Position.X, packet.Position.Y, packet.Position.Z),
+                        new Quaternion(packet.NeckRotation.X, packet.NeckRotation.Y, packet.NeckRotation.Z, packet.NeckRotation.W)));
                 }
                 catch (Exception e)
                 {
@@ -40,6 +42,7 @@ namespace StreamServer
                 try
                 {
                     var toRemove = _remotePlayers.Find(x => x.GetComponent<RemoteTransformRegister>().userId == userId);
+                    _remotePlayers.Remove(toRemove);
                     Destroy(toRemove);
                 }
                 catch (Exception e)
